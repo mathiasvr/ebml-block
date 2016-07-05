@@ -35,7 +35,7 @@ fs.createReadStream('media.mkv').pipe(decoder)
 ```
 
 ### output format
-```javascript
+```
 { trackNumber: 1,
   timecode: 542,
   invisible: false,
