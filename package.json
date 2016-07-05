@@ -1,0 +1,28 @@
+{
+  "name": "ebml-block",
+  "version": "1.0.0",
+  "description": "EBML Block Parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "author": "Mathias Rasmussen <mathiasvr@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "ebml",
+    "matroska",
+    "mkv",
+    "block",
+    "simpleblock"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathiasvr/ebml-block.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mathiasvr/ebml-block/issues"
+  },
+  "homepage": "https://github.com/mathiasvr/ebml-block#readme"
+}
