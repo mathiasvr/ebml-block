@@ -7,7 +7,9 @@
 [lic-img]: http://img.shields.io/:license-MIT-blue.svg
 [lic-url]: http://mvr.mit-license.org
 
-EBML Block Parser
+EBML Block Parser.
+
+Reads a buffer as a [EBML Block Structure](https://www.matroska.org/technical/specs/index.html#block_structure), supporting lacing.
 
 ## install
 

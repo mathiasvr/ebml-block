@@ -15,7 +15,8 @@
     "matroska",
     "mkv",
     "block",
-    "simpleblock"
+    "simpleblock",
+    "lacing"
   ],
   "repository": {
     "type": "git",

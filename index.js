@@ -1,4 +1,3 @@
-const assert = require('assert')
 const BufferReader = require('./lib/buffer-reader')
 
 const XIPH_LACING = 1
@@ -30,8 +29,20 @@ module.exports = function (buffer) {
 function readLacedData (reader, lacing) {
   if (!lacing) return [reader.nextBuffer()]
 
-  // number of frames
-  var framesNum = reader.nextUInt8() + 1
+  var frames = []
+  var framesNum = reader.nextUInt8() + 1 // number of frames
+
+  if (lacing === FIXED_SIZE_LACING) {
+    // remaining data should be divisible by the number of frames
+    if (reader.length % framesNum !== 0) throw new Error('Fixed-Size Lacing Error')
+
+    let frameSize = reader.length / framesNum
+    for (let i = 0; i < framesNum; i++) {
+      frames.push(reader.nextBuffer(frameSize))
+    }
+    return frames
+  }
+
   var frameSizes = []
 
   if (lacing === XIPH_LACING) {
@@ -54,39 +65,14 @@ function readLacedData (reader, lacing) {
       frameSize += reader.nextIntV()
       frameSizes.push(frameSize)
     }
-  } else if (lacing === FIXED_SIZE_LACING) {
-    let frameSize = reader.length / framesNum
-
-    assert.equal(frameSize % 1, 0)
-
-    // TODO: we don't have to use frameSizes for this
-    // when more stable, and assertions are moved, just create the frames directly and return
-    for (let i = 0; i < framesNum - 1; i++) {
-      frameSizes.push(frameSize)
-    }
   }
 
-  assert(lacing < 4)
-
-  var dataSize = reader.length // TODO: not needed
-
-  var frames = []
-
-  // TODO: maybe we should leave frame splitting to dev?
   for (let i = 0; i < framesNum - 1; i++) {
-    var frame = reader.nextBuffer(frameSizes[i])
-    frames.push(frame)
+    frames.push(reader.nextBuffer(frameSizes[i]))
   }
 
   // last frame (remaining buffer)
   frames.push(reader.nextBuffer())
-
-  // TODO: move all assertions to test? somehow
-  assert.equal(frames.map(a => a.length).reduce((a, b) => a + b), dataSize)
-
-  assert.equal(reader.length, 0)
-
-  assert.equal(frames.length, framesNum)
 
   return frames
 }
