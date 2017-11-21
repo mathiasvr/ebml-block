@@ -2,12 +2,19 @@
   "name": "ebml-block",
   "version": "1.1.0",
   "description": "EBML Block Parser",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "standard"
+    "clean": "rimraf dist",
+    "test": "standard",
+    "build": "babel index.js ./lib/*.js --out-dir dist",
+    "prepare": "npm run clean && npm run build"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "rimraf": "2.6.2"
+  },
   "author": "Mathias Rasmussen <mathiasvr@gmail.com>",
   "license": "MIT",
   "keywords": [
