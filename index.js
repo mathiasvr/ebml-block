@@ -1,8 +1,8 @@
-const BufferReader = require('./lib/buffer-reader')
+var BufferReader = require('./lib/buffer-reader')
 
-const XIPH_LACING = 1
-const EBML_LACING = 3
-const FIXED_SIZE_LACING = 2
+var XIPH_LACING = 1
+var EBML_LACING = 3
+var FIXED_SIZE_LACING = 2
 
 module.exports = function (buffer) {
   var block = {}
@@ -36,8 +36,8 @@ function readLacedData (reader, lacing) {
     // remaining data should be divisible by the number of frames
     if (reader.length % framesNum !== 0) throw new Error('Fixed-Size Lacing Error')
 
-    let frameSize = reader.length / framesNum
-    for (let i = 0; i < framesNum; i++) {
+    var frameSize = reader.length / framesNum
+    for (var i = 0; i < framesNum; i++) {
       frames.push(reader.nextBuffer(frameSize))
     }
     return frames
@@ -46,9 +46,9 @@ function readLacedData (reader, lacing) {
   var frameSizes = []
 
   if (lacing === XIPH_LACING) {
-    for (let i = 0; i < framesNum - 1; i++) {
+    for (var i = 0; i < framesNum - 1; i++) {
       var val
-      let frameSize = 0
+      var frameSize = 0
       do {
         val = reader.nextUInt8()
         frameSize += val
@@ -57,17 +57,17 @@ function readLacedData (reader, lacing) {
     }
   } else if (lacing === EBML_LACING) {
     // first frame
-    let frameSize = reader.nextUIntV()
+    var frameSize = reader.nextUIntV()
     frameSizes.push(frameSize)
 
     // middle frames
-    for (let i = 1; i < framesNum - 1; i++) {
+    for (var i = 1; i < framesNum - 1; i++) {
       frameSize += reader.nextIntV()
       frameSizes.push(frameSize)
     }
   }
 
-  for (let i = 0; i < framesNum - 1; i++) {
+  for (var i = 0; i < framesNum - 1; i++) {
     frames.push(reader.nextBuffer(frameSizes[i]))
   }
 
